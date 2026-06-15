@@ -8,8 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.model.Task
@@ -30,13 +29,13 @@ fun TaskItem(
             title = {
                 Text(
                     text = "Hapus Task",
-                    modifier = Modifier.semantics { contentDescription = "dialog_delete_title" }
+                    modifier = Modifier.testTag("dialog_delete_title")
                 )
             },
             text = {
                 Text(
                     text = "Apakah Anda yakin ingin menghapus \"${task.title}\"?",
-                    modifier = Modifier.semantics { contentDescription = "dialog_delete_message" }
+                    modifier = Modifier.testTag("dialog_delete_message")
                 )
             },
             confirmButton = {
@@ -45,7 +44,7 @@ fun TaskItem(
                         onDelete(task.id)
                         showDeleteDialog = false
                     },
-                    modifier = Modifier.semantics { contentDescription = "btn_confirm_delete" }
+                    modifier = Modifier.testTag("btn_confirm_delete")
                 ) {
                     Text("Hapus", color = MaterialTheme.colorScheme.error)
                 }
@@ -53,12 +52,12 @@ fun TaskItem(
             dismissButton = {
                 TextButton(
                     onClick = { showDeleteDialog = false },
-                    modifier = Modifier.semantics { contentDescription = "btn_cancel_delete" }
+                    modifier = Modifier.testTag("btn_cancel_delete")
                 ) {
                     Text("Batal")
                 }
             },
-            modifier = Modifier.semantics { contentDescription = "dialog_delete_confirmation" }
+            modifier = Modifier.testTag("dialog_delete_confirmation")
         )
     }
 
@@ -66,7 +65,7 @@ fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .semantics { contentDescription = "task_item_${task.id}" },
+            .testTag("task_item_${task.id}"),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -78,9 +77,7 @@ fun TaskItem(
             Checkbox(
                 checked = task.isCompleted,
                 onCheckedChange = { onToggleComplete(task.id) },
-                modifier = Modifier.semantics {
-                    contentDescription = "checkbox_task_${task.id}"
-                }
+                modifier = Modifier.testTag("checkbox_task_${task.id}")
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -90,47 +87,33 @@ fun TaskItem(
                     text = task.title,
                     style = MaterialTheme.typography.titleMedium,
                     textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
-                    modifier = Modifier.semantics {
-                        contentDescription = "task_title_${task.id}"
-                    }
+                    modifier = Modifier.testTag("task_title_${task.id}")
                 )
                 if (task.description.isNotBlank()) {
                     Text(
                         text = task.description,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.semantics {
-                            contentDescription = "task_description_${task.id}"
-                        }
+                        modifier = Modifier.testTag("task_description_${task.id}")
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
-
-                // Kategori & deadline
                 Text(
                     text = task.category.label,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.semantics {
-                        contentDescription = "task_category_${task.id}"
-                    }
+                    modifier = Modifier.testTag("task_category_${task.id}")
                 )
                 Text(
                     text = PriorityHelper.getDeadlineLabel(task.deadline),
                     style = MaterialTheme.typography.bodySmall,
                     color = PriorityHelper.getDeadlineLabelColor(task.deadline),
-                    modifier = Modifier.semantics {
-                        contentDescription = "task_deadline_${task.id}"
-                    }
+                    modifier = Modifier.testTag("task_deadline_${task.id}")
                 )
-
                 Spacer(modifier = Modifier.height(4.dp))
-
                 Badge(
                     containerColor = PriorityHelper.getColor(task.priority),
-                    modifier = Modifier.semantics {
-                        contentDescription = "task_priority_${task.id}"
-                    }
+                    modifier = Modifier.testTag("task_priority_${task.id}")
                 ) {
                     Text(
                         text = PriorityHelper.getLabel(task.priority),
@@ -143,18 +126,14 @@ fun TaskItem(
 
             IconButton(
                 onClick = { onEdit(task.id) },
-                modifier = Modifier.semantics {
-                    contentDescription = "btn_edit_task_${task.id}"
-                }
+                modifier = Modifier.testTag("btn_edit_task_${task.id}")
             ) {
                 Icon(Icons.Default.Edit, contentDescription = "Edit task")
             }
 
             IconButton(
                 onClick = { showDeleteDialog = true },
-                modifier = Modifier.semantics {
-                    contentDescription = "btn_delete_task_${task.id}"
-                }
+                modifier = Modifier.testTag("btn_delete_task_${task.id}")
             ) {
                 Icon(
                     Icons.Default.Delete,

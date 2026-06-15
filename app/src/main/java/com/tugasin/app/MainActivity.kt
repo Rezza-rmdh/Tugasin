@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,38 +26,44 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TugasinTheme {
-                val navController = rememberNavController()
-                val repository = remember { TaskRepository() }
-
-                NavHost(
-                    navController = navController,
-                    startDestination = "home"
+                Box(
+                    modifier = Modifier.semantics {
+                        testTagsAsResourceId = true
+                    }
                 ) {
-                    composable("home") {
-                        HomeScreen(
-                            repository = repository,
-                            onNavigateToAdd = { navController.navigate("add_task") },
-                            onNavigateToEdit = { taskId ->
-                                navController.navigate("edit_task/$taskId")
-                            }
-                        )
-                    }
-                    composable("add_task") {
-                        AddTaskScreen(
-                            repository = repository,
-                            onNavigateBack = { navController.popBackStack() }
-                        )
-                    }
-                    composable(
-                        route = "edit_task/{taskId}",
-                        arguments = listOf(navArgument("taskId") { type = NavType.IntType })
-                    ) { backStackEntry ->
-                        val taskId = backStackEntry.arguments?.getInt("taskId") ?: return@composable
-                        EditTaskScreen(
-                            taskId = taskId,
-                            repository = repository,
-                            onNavigateBack = { navController.popBackStack() }
-                        )
+                    val navController = rememberNavController()
+                    val repository = remember { TaskRepository() }
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "home"
+                    ) {
+                        composable("home") {
+                            HomeScreen(
+                                repository = repository,
+                                onNavigateToAdd = { navController.navigate("add_task") },
+                                onNavigateToEdit = { taskId ->
+                                    navController.navigate("edit_task/$taskId")
+                                }
+                            )
+                        }
+                        composable("add_task") {
+                            AddTaskScreen(
+                                repository = repository,
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
+                        composable(
+                            route = "edit_task/{taskId}",
+                            arguments = listOf(navArgument("taskId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val taskId = backStackEntry.arguments?.getInt("taskId") ?: return@composable
+                            EditTaskScreen(
+                                taskId = taskId,
+                                repository = repository,
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
                     }
                 }
             }

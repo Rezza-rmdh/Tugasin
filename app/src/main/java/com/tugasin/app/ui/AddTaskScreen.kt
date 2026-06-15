@@ -8,8 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.data.TaskRepository
 import com.tugasin.app.model.Task
@@ -47,13 +46,13 @@ fun AddTaskScreen(
                         selectedDeadline = datePickerState.selectedDateMillis
                         showDatePicker = false
                     },
-                    modifier = Modifier.semantics { contentDescription = "btn_confirm_date" }
+                    modifier = Modifier.testTag("btn_confirm_date")
                 ) { Text("OK") }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showDatePicker = false },
-                    modifier = Modifier.semantics { contentDescription = "btn_cancel_date" }
+                    modifier = Modifier.testTag("btn_cancel_date")
                 ) { Text("Batal") }
             }
         ) {
@@ -68,7 +67,7 @@ fun AddTaskScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = onNavigateBack,
-                        modifier = Modifier.semantics { contentDescription = "btn_back" }
+                        modifier = Modifier.testTag("btn_back")
                     ) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
@@ -83,7 +82,6 @@ fun AddTaskScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Input judul
             OutlinedTextField(
                 value = title,
                 onValueChange = {
@@ -92,33 +90,37 @@ fun AddTaskScreen(
                 },
                 label = { Text("Judul Task") },
                 isError = titleError,
-                supportingText = { if (titleError) Text("Judul tidak boleh kosong") },
+                supportingText = {
+                    if (titleError) Text(
+                        text = "Judul tidak boleh kosong",
+                        modifier = Modifier.testTag("txt_title_error")
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "input_task_title" },
+                    .testTag("input_task_title"),
                 singleLine = true
             )
 
-            // Input deskripsi
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
                 label = { Text("Deskripsi (opsional)") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "input_task_description" },
+                    .testTag("input_task_description"),
                 minLines = 2
             )
 
-            // Pilih kategori
             Text(text = "Kategori Tugas", style = MaterialTheme.typography.titleSmall)
+
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 TaskCategory.entries.forEach { category ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .semantics { contentDescription = "radio_category_${category.name.lowercase()}" }
+                            .testTag("radio_category_${category.name.lowercase()}")
                     ) {
                         RadioButton(
                             selected = selectedCategory == category,
@@ -133,13 +135,13 @@ fun AddTaskScreen(
                 }
             }
 
-            // Pilih deadline
-            Text(text = "Deadline", style = MaterialTheme.typography.titleSmall)
+            Text(text = "Deadline (opsional)", style = MaterialTheme.typography.titleSmall)
+
             OutlinedButton(
                 onClick = { showDatePicker = true },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "btn_pick_deadline" },
+                    .testTag("btn_pick_deadline")
             ) {
                 Icon(
                     Icons.Default.DateRange,
@@ -154,11 +156,10 @@ fun AddTaskScreen(
                 )
             }
 
-            // Preview priority otomatis
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "card_priority_preview" },
+                    .testTag("card_priority_preview"),
                 colors = CardDefaults.cardColors(
                     containerColor = PriorityHelper.getColor(calculatedPriority).copy(alpha = 0.1f)
                 )
@@ -177,16 +178,14 @@ fun AddTaskScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Skor: ${
-                                PriorityHelper.getCategoryScore(selectedCategory) 
-                            } (kategori: ${PriorityHelper.getCategoryScore(selectedCategory)})",
+                            text = "Skor kategori: ${PriorityHelper.getCategoryScore(selectedCategory)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Badge(
                         containerColor = PriorityHelper.getColor(calculatedPriority),
-                        modifier = Modifier.semantics { contentDescription = "badge_calculated_priority" }
+                        modifier = Modifier.testTag("badge_calculated_priority")
                     ) {
                         Text(
                             text = PriorityHelper.getLabel(calculatedPriority),
@@ -202,10 +201,9 @@ fun AddTaskScreen(
 
             Button(
                 onClick = {
-                    val isTitleEmpty = title.isBlank()
-                    titleError = isTitleEmpty
-
-                    if (!isTitleEmpty) {
+                    if (title.isBlank()) {
+                        titleError = true
+                    } else {
                         repository.addTask(
                             Task(
                                 title = title.trim(),
@@ -220,9 +218,9 @@ fun AddTaskScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "btn_save_task" }
+                    .testTag("btn_save_task")
             ) {
-                Text("Simpan Tugas")
+                Text("Simpan Task")
             }
         }
     }

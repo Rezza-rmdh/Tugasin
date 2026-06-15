@@ -10,8 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.data.TaskRepository
 import com.tugasin.app.model.Priority
@@ -42,13 +41,13 @@ fun HomeScreen(
                 title = {
                     Text(
                         text = "Tugasin",
-                        modifier = Modifier.semantics { contentDescription = "app_title" }
+                        modifier = Modifier.testTag("app_title")
                     )
                 },
                 actions = {
                     IconButton(
                         onClick = { showFilterSheet = true },
-                        modifier = Modifier.semantics { contentDescription = "btn_filter" }
+                        modifier = Modifier.testTag("btn_filter")
                     ) {
                         Icon(Icons.Default.List, contentDescription = "Filter & Sort")
                     }
@@ -58,7 +57,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToAdd,
-                modifier = Modifier.semantics { contentDescription = "btn_add_task" }
+                modifier = Modifier.testTag("btn_add_task")
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Task")
             }
@@ -73,10 +72,10 @@ fun HomeScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Belum ada tugas. klik + untuk menambahkan tugas!",
+                    text = "Belum ada tugas. Tekan + untuk menambahkan!",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.semantics { contentDescription = "txt_empty_state" }
+                    modifier = Modifier.testTag("txt_empty_state")
                 )
             }
         } else {
@@ -84,7 +83,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .semantics { contentDescription = "task_list" },
+                    .testTag("task_list"),
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(displayedTasks, key = { it.id }) { task ->

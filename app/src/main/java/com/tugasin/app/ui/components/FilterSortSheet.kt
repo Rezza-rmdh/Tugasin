@@ -5,8 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.model.Priority
 import com.tugasin.app.util.PriorityHelper
@@ -24,7 +23,7 @@ fun FilterSortSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        modifier = Modifier.semantics { contentDescription = "filter_sort_sheet" }
+        modifier = Modifier.testTag("filter_sort_sheet")
     ) {
         Column(
             modifier = Modifier
@@ -48,16 +47,14 @@ fun FilterSortSheet(
                     selected = selectedPriority == null,
                     onClick = { onPrioritySelected(null) },
                     label = { Text("All") },
-                    modifier = Modifier.semantics { contentDescription = "filter_priority_all" }
+                    modifier = Modifier.testTag("filter_priority_all")
                 )
                 Priority.entries.forEach { priority ->
                     FilterChip(
                         selected = selectedPriority == priority,
                         onClick = { onPrioritySelected(priority) },
                         label = { Text(PriorityHelper.getLabel(priority)) },
-                        modifier = Modifier.semantics {
-                            contentDescription = "filter_priority_${priority.name.lowercase()}"
-                        }
+                        modifier = Modifier.testTag("filter_priority_${priority.name.lowercase()}")
                     )
                 }
             }
@@ -74,19 +71,19 @@ fun FilterSortSheet(
                     selected = selectedCompleted == null,
                     onClick = { onCompletedSelected(null) },
                     label = { Text("All") },
-                    modifier = Modifier.semantics { contentDescription = "filter_status_all" }
+                    modifier = Modifier.testTag("filter_status_all")
                 )
                 FilterChip(
                     selected = selectedCompleted == false,
                     onClick = { onCompletedSelected(false) },
                     label = { Text("Active") },
-                    modifier = Modifier.semantics { contentDescription = "filter_status_active" }
+                    modifier = Modifier.testTag("filter_status_active")
                 )
                 FilterChip(
                     selected = selectedCompleted == true,
                     onClick = { onCompletedSelected(true) },
                     label = { Text("Completed") },
-                    modifier = Modifier.semantics { contentDescription = "filter_status_completed" }
+                    modifier = Modifier.testTag("filter_status_completed")
                 )
             }
 
@@ -104,7 +101,7 @@ fun FilterSortSheet(
                 Switch(
                     checked = sortByPriority,
                     onCheckedChange = onSortByPriorityChanged,
-                    modifier = Modifier.semantics { contentDescription = "switch_sort_by_priority" }
+                    modifier = Modifier.testTag("switch_sort_by_priority")
                 )
             }
 
@@ -114,7 +111,7 @@ fun FilterSortSheet(
                 onClick = onDismiss,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "btn_apply_filter" }
+                    .testTag("btn_apply_filter")
             ) {
                 Text("Apply")
             }
