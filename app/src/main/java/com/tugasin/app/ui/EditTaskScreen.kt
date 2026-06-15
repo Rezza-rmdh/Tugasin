@@ -129,11 +129,11 @@ fun EditTaskScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag("radio_category_${category.name.lowercase()}")
                     ) {
                         RadioButton(
                             selected = selectedCategory == category,
-                            onClick = { selectedCategory = category }
+                            onClick = { selectedCategory = category },
+                            modifier = Modifier.testTag("radio_category_${category.name.lowercase()}")
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
