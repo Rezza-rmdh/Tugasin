@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.model.Priority
 import com.tugasin.app.util.PriorityHelper
@@ -23,7 +25,7 @@ fun FilterSortSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        modifier = Modifier.testTag("filter_sort_sheet")
+        modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_sort_sheet")
     ) {
         Column(
             modifier = Modifier
