@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import com.tugasin.app.data.TaskRepository
 import com.tugasin.app.model.Task
@@ -46,13 +48,13 @@ fun AddTaskScreen(
                         selectedDeadline = datePickerState.selectedDateMillis
                         showDatePicker = false
                     },
-                    modifier = Modifier.testTag("btn_confirm_date")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("btn_confirm_date")
                 ) { Text("OK") }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showDatePicker = false },
-                    modifier = Modifier.testTag("btn_cancel_date")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("btn_cancel_date")
                 ) { Text("Batal") }
             }
         ) {
