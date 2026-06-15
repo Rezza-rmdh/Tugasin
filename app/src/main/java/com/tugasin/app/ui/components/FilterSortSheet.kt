@@ -49,14 +49,14 @@ fun FilterSortSheet(
                     selected = selectedPriority == null,
                     onClick = { onPrioritySelected(null) },
                     label = { Text("All") },
-                    modifier = Modifier.testTag("filter_priority_all")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_priority_all")
                 )
                 Priority.entries.forEach { priority ->
                     FilterChip(
                         selected = selectedPriority == priority,
                         onClick = { onPrioritySelected(priority) },
                         label = { Text(PriorityHelper.getLabel(priority)) },
-                        modifier = Modifier.testTag("filter_priority_${priority.name.lowercase()}")
+                        modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_priority_${priority.name.lowercase()}")
                     )
                 }
             }
@@ -73,19 +73,19 @@ fun FilterSortSheet(
                     selected = selectedCompleted == null,
                     onClick = { onCompletedSelected(null) },
                     label = { Text("All") },
-                    modifier = Modifier.testTag("filter_status_all")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_status_all")
                 )
                 FilterChip(
                     selected = selectedCompleted == false,
                     onClick = { onCompletedSelected(false) },
                     label = { Text("Active") },
-                    modifier = Modifier.testTag("filter_status_active")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_status_active")
                 )
                 FilterChip(
                     selected = selectedCompleted == true,
                     onClick = { onCompletedSelected(true) },
                     label = { Text("Completed") },
-                    modifier = Modifier.testTag("filter_status_completed")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("filter_status_completed")
                 )
             }
 
@@ -103,7 +103,7 @@ fun FilterSortSheet(
                 Switch(
                     checked = sortByPriority,
                     onCheckedChange = onSortByPriorityChanged,
-                    modifier = Modifier.testTag("switch_sort_by_priority")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("switch_sort_by_priority")
                 )
             }
 
@@ -113,6 +113,7 @@ fun FilterSortSheet(
                 onClick = onDismiss,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .semantics { testTagsAsResourceId = true }
                     .testTag("btn_apply_filter")
             ) {
                 Text("Apply")

@@ -31,13 +31,13 @@ fun TaskItem(
             title = {
                 Text(
                     text = "Hapus Task",
-                    modifier = Modifier.testTag("dialog_delete_title")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("dialog_delete_title")
                 )
             },
             text = {
                 Text(
                     text = "Apakah Anda yakin ingin menghapus \"${task.title}\"?",
-                    modifier = Modifier.testTag("dialog_delete_message")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("dialog_delete_message")
                 )
             },
             confirmButton = {
@@ -46,7 +46,7 @@ fun TaskItem(
                         onDelete(task.id)
                         showDeleteDialog = false
                     },
-                    modifier = Modifier.testTag("btn_confirm_delete")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("btn_confirm_delete")
                 ) {
                     Text("Hapus", color = MaterialTheme.colorScheme.error)
                 }
@@ -54,7 +54,7 @@ fun TaskItem(
             dismissButton = {
                 TextButton(
                     onClick = { showDeleteDialog = false },
-                    modifier = Modifier.testTag("btn_cancel_delete")
+                    modifier = Modifier.semantics { testTagsAsResourceId = true }.testTag("btn_cancel_delete")
                 ) {
                     Text("Batal")
                 }
